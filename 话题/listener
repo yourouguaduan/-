@@ -1,0 +1,15 @@
+#include"ros/ros.h"
+#include"std_msgs/String.h"
+ 
+void chatterCallback(const std_msgs::String::ConstPtr& msg)
+{
+    ROS_INFO("I heared :[%s]",msg->data.c_str());
+}//回调函数，收到chatter话题时会调用这个函数，消息通过boost shared_ptr(共享指针)传递，收到消息通过ROS_INFO显示到终端
+int main(int argc, char **argv)
+{
+    ros::init(argc, argv, "listener");
+    ros::NodeHandle n;
+    ros::Subscriber sub=n.subscribe("chatter",1000,chatterCallback);//订阅节点
+    ros::spin();//调用此函数才能进入循环处理，直到ros::ok返回false结束
+    return 0;
+}
